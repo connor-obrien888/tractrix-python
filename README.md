@@ -14,7 +14,8 @@ tractrix(sin_rec, p_dyn, n = 1000, s_param = np.asarray([14.56,-0.0354,5.697]), 
     Calculate a set of n points in GSE X and Y representing the predicted 
     magnetopause surface in 2D from the IMF sine rectifier sin_rec and
     the solar wind dynamic pressure p_dyn. If multiple sets of solar wind
-    conditions are provided, a surface is calculated for each set.
+    conditions are provided, a surface is calculated for each set. Units
+    in Earth radii.
 
     Parameters
     ----------
