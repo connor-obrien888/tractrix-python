@@ -1,16 +1,23 @@
-# Tractrix (Python Library)
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Dec 22 10:04:35 2020
 
-This is a library for python containing an implementation of the tractrix magnetopause model from O'Brien et al. (2021), with some utility functions.
+    Library with a convenient implementation of the tractrix magnetopause
+    model from O'Brien et al. (2021). More information can be found on my 
+    Github at the URL https://github.com/connor-obrien888/tractrix
 
-Install via pip:
-```
-pip install tractrix
-```
+@author: connor o'brien
+"""
 
-As of Version 0.1.0, the functions included are:
-```
-tractrix(sin_rec, p_dyn, n = 1000, s_param = np.asarray([14.56,-0.0354,5.697]), w_param = np.asarray([32.31,-0.265,11.80])):
-    
+import numpy as np
+
+__all__ = ["tractrix", "sine_rectifier"]
+
+
+def tractrix(sin_rec, p_dyn, n = 1000, 
+             s_param = np.asarray([14.56,-0.0354,5.697]), 
+             w_param = np.asarray([32.31,-0.265,11.80])):
+    """
     Calculate a set of n points in GSE X and Y representing the predicted 
     magnetopause surface in 2D from the IMF sine rectifier sin_rec and
     the solar wind dynamic pressure p_dyn. If multiple sets of solar wind
@@ -50,10 +57,24 @@ tractrix(sin_rec, p_dyn, n = 1000, s_param = np.asarray([14.56,-0.0354,5.697]), 
        Set of n points in GSE Y for the ndim solar wind conditions describing
        the tractrix surface for each set of conditions. Returns NaN for any
        curves where w < 0.
-```
-```
-sine_rectifier(bx, by, bz):
+       
+    """
+    s = (s_param[0] + s_param[1] * sin_rec) * (p_dyn ** (-1 / s_param[2]))
+    w = (w_param[0] + w_param[1] * sin_rec) * (p_dyn ** (-1 / w_param[2]))
+    try:
+        w = np.array([np.nan if i < 0 else i for i in w])
+    except TypeError:
+        w = np.nan if w < 0 else w
+    y = np.linspace(0,w,num=n+1)
+    x = s - w * np.log((w + np.sqrt(np.abs(w ** 2 - (w - y[:-1]) ** 2))) / 
+                       np.abs(w - y[:-1])) + np.sqrt(np.abs(w**2 - (w - y[:-1]
+                                                                    ) ** 2))
+    return x, y[:-1]
     
+    
+    
+def sine_rectifier(bx, by, bz):
+    """
     Calculate the sine rectifier of the IMF in nT given its three components
     in GSE coordinates and nT.
 
@@ -76,10 +97,6 @@ sine_rectifier(bx, by, bz):
     sin_rec : array_like[ndim,]
        Sine rectifier of the IMF in nT for the ndim provided solar wind 
        components. 
-```
-
-If you make use of this code, please cite the paper from which the model was derived:
-
-```
-Citation to come
-```
+    """
+    sin_rec = np.sqrt(bx**2+by**2+bz**2)*(np.sin(np.arctan2(by,bz)/2)**2)
+    return sin_rec
