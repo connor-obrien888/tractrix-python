@@ -9,8 +9,8 @@ from setuptools import find_packages, setup
 
 setup(
     name = 'tractrix',
-    packages = find_packages(where="tractrix", include=['tractrix']),
-    version = '0.1.3',
+    packages = ['tractrix'],
+    version = '0.1.4',
     description = 'A convenient implementation of the tractrix magnetopause',
     author = 'Connor OBrien',
     author_email = 'obrienco@bu.edu',

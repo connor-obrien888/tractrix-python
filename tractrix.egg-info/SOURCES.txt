@@ -1,5 +1,7 @@
 README.md
 setup.py
+tractrix/__init__.py
+tractrix/tractrix.py
 tractrix.egg-info/PKG-INFO
 tractrix.egg-info/SOURCES.txt
 tractrix.egg-info/dependency_links.txt
