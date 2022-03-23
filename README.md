@@ -1,6 +1,6 @@
 # Tractrix (Python Library)
 
-This is a library for python containing an implementation of the tractrix magnetopause model from O'Brien et al. (2021), with some utility functions.
+This is a library for python containing an implementation of the tractrix magnetopause model from O'Brien et al. (2022), with some utility functions.
 
 Install via pip:
 ```
